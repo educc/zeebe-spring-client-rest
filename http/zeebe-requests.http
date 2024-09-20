@@ -1,9 +1,15 @@
 
 ### Run process
-POST http://localhost:8080/zeebe/run-process/simple_process_v3
+POST http://localhost:8080/zeebe/run-process/two_approval_v2
 
 
-### GET request to example server
-GET http://localhost:8080/zeebe/2251799814081323
+### GET process instance
+GET http://localhost:8080/zeebe/2251799814122605
+
+###
+
+
+### GET user tasks
+GET http://localhost:8080/zeebe/user-tasks/2251799814122605
 
 ###
