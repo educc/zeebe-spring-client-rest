@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_19b94sr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:process id="two_approval_v2" name="two_approval_v2" isExecutable="true">
+    <bpmn:startEvent id="start_approval_2" name="start">
+      <bpmn:outgoing>Flow_0gb2kk6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0gb2kk6" sourceRef="start_approval_2" targetRef="first_approval" />
+    <bpmn:exclusiveGateway id="was_approve_1" name="Was it approve?">
+      <bpmn:incoming>Flow_0gbvs7b</bpmn:incoming>
+      <bpmn:outgoing>rejected</bpmn:outgoing>
+      <bpmn:outgoing>flow_approved_1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0gbvs7b" sourceRef="first_approval" targetRef="was_approve_1" />
+    <bpmn:sequenceFlow id="rejected" name="rejected" sourceRef="was_approve_1" targetRef="end_rejected">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=is_approved = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="first_approval" name="First Approval">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:ioMapping>
+          <zeebe:input source="=input_is_approved" target="input_is_approved" />
+          <zeebe:output source="=input_is_approved" target="is_approved" />
+        </zeebe:ioMapping>
+        <zeebe:assignmentDefinition assignee="=assignee_1" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gb2kk6</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gbvs7b</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="flow_approved_1" name="approved 1" sourceRef="was_approve_1" targetRef="Activity_1v9hsep">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=is_approved = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="was_approve_2" name="Was it approve">
+      <bpmn:incoming>Flow_1z0jawh</bpmn:incoming>
+      <bpmn:outgoing>flow_approved_2</bpmn:outgoing>
+      <bpmn:outgoing>rejected_2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1z0jawh" sourceRef="Activity_1v9hsep" targetRef="was_approve_2" />
+    <bpmn:endEvent id="end_approved" name="Approved">
+      <bpmn:incoming>flow_approved_2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_approved_2" name="approved 2" sourceRef="was_approve_2" targetRef="end_approved">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=is_approved_2 = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_1v9hsep" name="Second Approval">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:ioMapping>
+          <zeebe:input source="=input_is_approved" target="input_is_approved" />
+          <zeebe:output source="=input_is_approved" target="is_approved_2" />
+        </zeebe:ioMapping>
+        <zeebe:assignmentDefinition assignee="=assignee_2" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>flow_approved_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1z0jawh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="rejected_2" name="rejected 2" sourceRef="was_approve_2" targetRef="end_rejected">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=is_approved_2 = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="end_rejected" name="Rejected">
+      <bpmn:incoming>rejected_2</bpmn:incoming>
+      <bpmn:incoming>rejected</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="two_approval_v2">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_approval_2">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="142" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1b7o0n2_di" bpmnElement="was_approve_1" isMarkerVisible="true">
+        <dc:Bounds x="535" y="92" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="520" y="68" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dcd8gr_di" bpmnElement="first_approval">
+        <dc:Bounds x="310" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1a7vq6r_di" bpmnElement="was_approve_2" isMarkerVisible="true">
+        <dc:Bounds x="935" y="92" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="923" y="68" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17dl86l_di" bpmnElement="end_approved">
+        <dc:Bounds x="1112" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1107" y="142" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10g0xex_di" bpmnElement="Activity_1v9hsep">
+        <dc:Bounds x="710" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1y7u3iu_di" bpmnElement="end_rejected">
+        <dc:Bounds x="1102" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1098" y="285" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0gb2kk6_di" bpmnElement="Flow_0gb2kk6">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="310" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gbvs7b_di" bpmnElement="Flow_0gbvs7b">
+        <di:waypoint x="410" y="117" />
+        <di:waypoint x="535" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oncbof_di" bpmnElement="rejected">
+        <di:waypoint x="560" y="142" />
+        <di:waypoint x="560" y="200" />
+        <di:waypoint x="473" y="200" />
+        <di:waypoint x="473" y="280" />
+        <di:waypoint x="1120" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="497" y="182" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ifcpuw_di" bpmnElement="flow_approved_1">
+        <di:waypoint x="585" y="117" />
+        <di:waypoint x="710" y="117" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="620" y="99" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1z0jawh_di" bpmnElement="Flow_1z0jawh">
+        <di:waypoint x="810" y="117" />
+        <di:waypoint x="935" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hn81tz_di" bpmnElement="flow_approved_2">
+        <di:waypoint x="985" y="117" />
+        <di:waypoint x="1112" y="117" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1021" y="99" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_028my30_di" bpmnElement="rejected_2">
+        <di:waypoint x="960" y="142" />
+        <di:waypoint x="960" y="260" />
+        <di:waypoint x="1102" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="946" y="194" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

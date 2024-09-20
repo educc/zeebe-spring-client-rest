@@ -8,7 +8,6 @@ import java.net.URI;
 
 
 public class CamundaClientBuilder {
-    private static final String CAMUNDA_PATH = "/Users/ecacho/Downloads/camunda";
     private static String host = "ingress.local";
     private static final String zeebeGrpc = "grpc://" + host + ":443";
     private static final String zeebeRest = "http://" + host + ":8088";

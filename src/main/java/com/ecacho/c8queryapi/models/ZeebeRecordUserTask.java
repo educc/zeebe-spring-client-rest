@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class ZeebeRecordUserTask {
 
     private @Id String id;
+    private String key;
     private String intent;
     private String valueType;
     private long timestamp;
@@ -20,6 +21,6 @@ public class ZeebeRecordUserTask {
 
     @Data
     public static class Value {
-        String elementId, type, processInstanceKey;
+        String elementId, type, processInstanceKey, assignee, action;
     }
 }

@@ -1,15 +1,26 @@
 
 ### Run process
-POST http://localhost:8080/zeebe/run-process/two_approval_v2
+POST http://localhost:8080/zeebe/process/two_approval_v2/run
 
 
 ### GET process instance
-GET http://localhost:8080/zeebe/2251799814122605
+GET http://localhost:8080/zeebe/2251799814130393
+
+###
+
+### GET process instance status
+GET http://localhost:8080/zeebe/process-instance/2251799814130393/status
 
 ###
 
 
 ### GET user tasks
-GET http://localhost:8080/zeebe/user-tasks/2251799814122605
+GET http://localhost:8080/zeebe/process-instance/2251799814130393/user-tasks
+
+###
+
+
+### Approve user task
+POST http://localhost:8080/zeebe/user-task/2251799814130426/complete?approve=true
 
 ###
